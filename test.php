@@ -1,5 +1,5 @@
 <?php
-require('DNS/dnsProtocol.php');
+require('autoload.php');
 
 $dns = new Metaregistrar\DNS\dnsProtocol();
 $dns->setServer('ns1.metaregistrar.com');
