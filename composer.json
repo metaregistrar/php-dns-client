@@ -8,5 +8,8 @@
       "name": "Ewout de Graaf",
       "email": "ewout@metaregistrar.com"
     }
-  ]
+  ],
+  "require": {
+    "phpunit/phpunit": "^4.8"
+  }
 }
