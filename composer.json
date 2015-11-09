@@ -1,0 +1,12 @@
+{
+  "name": "metaregistrar/php-dns-client",
+  "description": "A php-only, object-oriented client that is able to read and process DNS records",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Ewout de Graaf",
+      "email": "ewout@metaregistrar.com"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+This client is written in PHP and does not rely on other tools or installations
+
+The software will retrieve DNS records from any given DNS server, and convert them to proper PHP objects for further processing.
+
+All different DNS record types have their own object in the repository.
