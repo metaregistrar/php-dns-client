@@ -376,25 +376,8 @@ namespace Metaregistrar\DNS {
 
         function registrynameservers($tld)
         {
-            #
-            # For a full list of nameservers per extension see http://www.iana.org/domains/root/db
-            # However we have found that some nameservers do not respond to DNSSEC requests
-            # That is why this list is filled manually per extension
-            #
-            $dnsservers = null;
-            switch (strtolower($tld))
-            {
-                case 'nl':
-                    $dnsservers = array('ns1.dns.nl','ns2.dns.nl','ns3.dns.nl');
-                    break;
-                case 'eu':
-                    $dnsservers = array('a.nic.eu','l.nic.eu');
-                    break;
-                case 'com':
-                    $dnsservers = array('a.gtld-servers.net','b.gtld-servers.net');
-                    break;
-            }
-            return $dnsservers;
+            $ns = new dnsNameserver();
+            return $ns->getNs($tld);
         }
 
         function base32encode($input, $padding = true) {
