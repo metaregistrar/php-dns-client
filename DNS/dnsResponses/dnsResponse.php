@@ -201,7 +201,7 @@ namespace Metaregistrar\DNS {
                     break;
 
                 case 'CNAME':
-                    $result = new dnsCNAMEResult($this->ReadDomainLabel($buffer));
+                    $result = new dnsCNAMEresult($this->ReadDomainLabel($buffer));
                     break;
 
                 case 'MX':

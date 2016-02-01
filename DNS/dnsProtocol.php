@@ -71,7 +71,7 @@ namespace Metaregistrar\DNS {
             {
                 return true; // return true to continue through the others error handlers
             }
-            throw new DnsException('Found '.$errstr.' in line '.$errline.' of '.$errfile, $errno, null);
+            throw new dnsException('Found '.$errstr.' in line '.$errline.' of '.$errfile, $errno, null);
         }
 
 
