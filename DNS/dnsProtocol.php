@@ -97,7 +97,7 @@ namespace Metaregistrar\DNS {
             {
                 $host=$this->server;
             }
-            if (!$socket=@fsockopen($host,$this->port,$this->timeout))
+            if (!$socket=@fsockopen($host,$this->port,$errno,$errstr,$this->timeout))
             {
                 throw new dnsException("Failed to open socket to ".$host);
             }
