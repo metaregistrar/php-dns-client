@@ -12,7 +12,7 @@ namespace Metaregistrar\DNS {
 
         public function setData($data)
         {
-            $this->dat = $data;
+            $this->data = $data;
         }
 
         public function getData()
