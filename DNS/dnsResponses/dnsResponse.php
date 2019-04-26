@@ -226,7 +226,7 @@ namespace Metaregistrar\DNS {
                     break;
 
                 case 'TXT':
-                    $result = new dnsTXTResult($this->ReadResponse($buffer, $ans_header['length']));
+                    $result = new dnsTXTresult($this->ReadResponse($buffer, $ans_header['length']));
                     break;
 
                 case 'DS':
