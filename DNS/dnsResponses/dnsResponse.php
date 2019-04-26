@@ -201,7 +201,7 @@ namespace Metaregistrar\DNS {
                     break;
 
                 case 'CNAME':
-                    $result = new dnsCNAMEResult($this->ReadDomainLabel($buffer));
+                    $result = new dnsCNAMEresult($this->ReadDomainLabel($buffer));
                     break;
 
                 case 'MX':
@@ -226,7 +226,7 @@ namespace Metaregistrar\DNS {
                     break;
 
                 case 'TXT':
-                    $result = new dnsTXTResult($this->ReadResponse($buffer, $ans_header['length']));
+                    $result = new dnsTXTresult($this->ReadResponse($buffer, $ans_header['length']));
                     break;
 
                 case 'DS':
@@ -279,7 +279,7 @@ namespace Metaregistrar\DNS {
             $result->setTypeid($typeid);
             $result->setClass($ans_header['class']);
             $result->setTtl($ans_header['ttl']);
-            $this->AddResult($result, $resulttype);
+            $this->addResult($result, $resulttype);
             return;
         }
 
