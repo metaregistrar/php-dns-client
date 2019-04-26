@@ -28,12 +28,12 @@ namespace Metaregistrar\DNS {
         protected $port;
         /**
          *
-         * @var integer $timeout = 60
+         * @var float $timeout = 60
          */
         protected $timeout;
         /**
          *
-         * @var boolean $udp = true;
+         * @var boolean $udp = false;
          */
         protected $udp;
         /**
@@ -42,6 +42,8 @@ namespace Metaregistrar\DNS {
          */
         protected $types;
 
+        const DEFAULT_TIMEOUT = 60;
+
         function __construct($logging = false)
         {
             if ($logging)
@@ -49,7 +51,7 @@ namespace Metaregistrar\DNS {
                 $this->enableLogging();
             }
             $this->port=53;
-            $this->timeout=60;
+            $this->timeout=self::DEFAULT_TIMEOUT;
             $this->udp=false;
             $this->types=new dnsTypes();
             set_error_handler(array($this,'error_handler'));
@@ -71,7 +73,7 @@ namespace Metaregistrar\DNS {
             {
                 return true; // return true to continue through the others error handlers
             }
-            throw new DnsException('Found '.$errstr.' in line '.$errline.' of '.$errfile, $errno, null);
+            throw new dnsException('Found '.$errstr.' in line '.$errline.' of '.$errfile, $errno, null);
         }
 
 
@@ -97,7 +99,7 @@ namespace Metaregistrar\DNS {
             {
                 $host=$this->server;
             }
-            if (!$socket=@fsockopen($host,$this->port,$this->timeout))
+            if (!$socket=@fsockopen($host,$this->port,$errno,$errstr,$this->timeout))
             {
                 throw new dnsException("Failed to open socket to ".$host);
             }
@@ -268,6 +270,20 @@ namespace Metaregistrar\DNS {
         public function getServer()
         {
             return $this->server;
+        }
+
+        public function setTimeout($timeout = self::DEFAULT_TIMEOUT)
+        {
+            if (!$new_timeout = floatval($timeout) || $timeout < 0)
+            {
+                throw new dnsException("Incorrect timeout value: <" . $timeout . ">. Timeout must be positive number.");
+            }
+            $this->timeout = $new_timeout;
+        }
+
+        public function getTimeout()
+        {
+            return $this->timeout;
         }
 
         public function setPort($port)
