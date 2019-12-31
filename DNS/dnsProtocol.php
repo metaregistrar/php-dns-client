@@ -211,12 +211,12 @@ namespace Metaregistrar\DNS {
             $flags = sprintf("%016b\n",$this->header['flags']);
             $response=new dnsResponse();
 
-            $response->setAuthorative($flags{5}=='1');
-            $response->setTruncated($flags{6}=='1');
-            $response->setRecursionRequested($flags{7}=='1');
-            $response->setRecursionAvailable($flags{8}=='1');
-            $response->setAuthenticated($flags{10}=='1');
-            $response->setDnssecAware($flags{11}=='1');
+            $response->setAuthorative($flags[5]=='1');
+            $response->setTruncated($flags[6]=='1');
+            $response->setRecursionRequested($flags[7]=='1');
+            $response->setRecursionAvailable($flags[8]=='1');
+            $response->setAuthenticated($flags[10]=='1');
+            $response->setDnssecAware($flags[11]=='1');
             $response->setAnswerCount($this->header['ancount']);
 
             $this->writeLog("Query returned ".$this->header['ancount']." Answers");
