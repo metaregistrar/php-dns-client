@@ -192,6 +192,11 @@ namespace Metaregistrar\DNS {
                     $result = new dnsAresult(implode(".", unpack("Ca/Cb/Cc/Cd", $this->ReadResponse($buffer, 4))));
                     break;
 
+                case 'AAAA':
+                    // short: 2a01:448:1004::11
+                    $result = new dnsAAAAresult(implode(':',unpack("H4a/H4b/H4c/H4d/H4e/H4f/H4g/H4h", $this->ReadResponse($buffer, 16))));
+                    break;
+
                 case 'NS':
                     $result = new dnsNSresult($this->ReadDomainLabel($buffer));
                     break;
@@ -375,7 +380,7 @@ namespace Metaregistrar\DNS {
         {
             return $this->additionalResponses;
         }
-/*
+
         private function DebugBinary($data)
         {
             echo pack("S", $data);
@@ -393,7 +398,7 @@ namespace Metaregistrar\DNS {
                 if (($dec > 30) && ($dec < 150)) echo $data[$a];
                 echo "\n";
             }
-        }*/
+        }
 
     }
 }
