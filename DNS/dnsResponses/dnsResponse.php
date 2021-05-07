@@ -251,10 +251,10 @@ namespace Metaregistrar\DNS {
                     $flags = sprintf("%016b\n", $extras['flags']);
                     $result = new dnsDNSKEYresult($extras['flags'], $extras['protocol'], $extras['algorithm'], $extras['pubkey']);
                     $result->setKeytag($this->keytag($stuff, $ans_header['length']));
-                    if ($flags{7} == '1') {
+                    if ($flags[7] == '1') {
                         $result->setZoneKey(true);
                     }
-                    if ($flags{15} == '1') {
+                    if ($flags[15] == '1') {
                         $result->setSep(true);
                     }
                     break;

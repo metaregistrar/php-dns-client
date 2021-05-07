@@ -9,7 +9,7 @@ foreach ($rootzone as $zone){
                 $type = $array[5];
                 $tld = strtolower($array[0]);
                 if (strlen($tld)>1) {
-                    if ($tld{strlen($tld)-1}=='.') {
+                    if ($tld[strlen($tld)-1]=='.') {
                         $tld = substr($tld,0,strlen($tld)-1);
                     }
                     $content = $array[6];
