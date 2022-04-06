@@ -8,8 +8,15 @@ namespace Metaregistrar\DNS {
         public function __construct($record)
         {
             parent::__construct();
-            $this->recordlength = ord($record[0]);
-            $this->setRecord(substr($record,1));
+            
+            $lenght = 0;
+            $txt = '';
+            foreach(str_split($record, 256) as $chunk) {
+                $lenght += ord($chunk[0]);
+                $txt .= substr($chunk,1);
+            }
+            $this->recordlength = $lenght;
+            $this->setRecord($txt);
         }
 
         public function setRecord($record)
