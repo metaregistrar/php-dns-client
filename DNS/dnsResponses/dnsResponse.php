@@ -285,7 +285,6 @@ namespace Metaregistrar\DNS {
             $result->setClass($ans_header['class']);
             $result->setTtl($ans_header['ttl']);
             $this->addResult($result, $resulttype);
-            return;
         }
 
 
@@ -297,8 +296,7 @@ namespace Metaregistrar\DNS {
                 $ac += (($i & 1) ? $keyp[1] : $keyp[1] << 8);
             }
             $ac += ($ac >> 16) & 0xFFFF;
-            $keytag = $ac & 0xFFFF;
-            return $keytag;
+            return $ac & 0xFFFF;
         }
 
         private function keytag2($key, $keysize)
@@ -309,8 +307,7 @@ namespace Metaregistrar\DNS {
                 $ac += ($i % 2 ? $keyp[1] : 256 * $keyp[1]);
             }
             $ac += ($ac / 65536) % 65536;
-            $keytag = $ac % 65536;
-            return $keytag;
+            return $ac % 65536;
         }
 
         private function ReadDomainLabel($buffer)
