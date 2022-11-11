@@ -192,6 +192,11 @@ namespace Metaregistrar\DNS {
                     $result = new dnsAresult(implode(".", unpack("Ca/Cb/Cc/Cd", $this->ReadResponse($buffer, 4))));
                     break;
 
+                case 'AAAA':
+                    // short: 2a01:448:1004::11
+                    $result = new dnsAAAAresult(implode(':',unpack("H4a/H4b/H4c/H4d/H4e/H4f/H4g/H4h", $this->ReadResponse($buffer, 16))));
+                    break;
+
                 case 'NS':
                     $result = new dnsNSresult($this->ReadDomainLabel($buffer));
                     break;
@@ -226,7 +231,7 @@ namespace Metaregistrar\DNS {
                     break;
 
                 case 'TXT':
-                    $result = new dnsTXTResult($this->ReadResponse($buffer, $ans_header['length']));
+                    $result = new dnsTXTresult($this->ReadResponse($buffer, $ans_header['length']));
                     break;
 
                 case 'DS':
@@ -246,10 +251,10 @@ namespace Metaregistrar\DNS {
                     $flags = sprintf("%016b\n", $extras['flags']);
                     $result = new dnsDNSKEYresult($extras['flags'], $extras['protocol'], $extras['algorithm'], $extras['pubkey']);
                     $result->setKeytag($this->keytag($stuff, $ans_header['length']));
-                    if ($flags{7} == '1') {
+                    if ($flags[7] == '1') {
                         $result->setZoneKey(true);
                     }
-                    if ($flags{15} == '1') {
+                    if ($flags[15] == '1') {
                         $result->setSep(true);
                     }
                     break;
@@ -279,8 +284,7 @@ namespace Metaregistrar\DNS {
             $result->setTypeid($typeid);
             $result->setClass($ans_header['class']);
             $result->setTtl($ans_header['ttl']);
-            $this->AddResult($result, $resulttype);
-            return;
+            $this->addResult($result, $resulttype);
         }
 
 
@@ -292,8 +296,7 @@ namespace Metaregistrar\DNS {
                 $ac += (($i & 1) ? $keyp[1] : $keyp[1] << 8);
             }
             $ac += ($ac >> 16) & 0xFFFF;
-            $keytag = $ac & 0xFFFF;
-            return $keytag;
+            return $ac & 0xFFFF;
         }
 
         private function keytag2($key, $keysize)
@@ -304,8 +307,7 @@ namespace Metaregistrar\DNS {
                 $ac += ($i % 2 ? $keyp[1] : 256 * $keyp[1]);
             }
             $ac += ($ac / 65536) % 65536;
-            $keytag = $ac % 65536;
-            return $keytag;
+            return $ac % 65536;
         }
 
         private function ReadDomainLabel($buffer)
@@ -375,7 +377,7 @@ namespace Metaregistrar\DNS {
         {
             return $this->additionalResponses;
         }
-/*
+
         private function DebugBinary($data)
         {
             echo pack("S", $data);
@@ -393,7 +395,7 @@ namespace Metaregistrar\DNS {
                 if (($dec > 30) && ($dec < 150)) echo $data[$a];
                 echo "\n";
             }
-        }*/
+        }
 
     }
 }

@@ -205,18 +205,18 @@ namespace Metaregistrar\DNS {
             }
 
             $this->rawheader=substr($this->rawbuffer,0,12); // first 12 bytes is the header
-            $this->rawresponse=substr($this->rawbuffer,12); // after that the response
+            #$this->rawresponse=substr($this->rawbuffer,12); // after that the response
             #$this->DebugBinary($this->rawbuffer);
             $this->header=unpack("nid/nflags/nqdcount/nancount/nnscount/narcount",$this->rawheader);
             $flags = sprintf("%016b\n",$this->header['flags']);
             $response=new dnsResponse();
 
-            $response->setAuthorative($flags{5}=='1');
-            $response->setTruncated($flags{6}=='1');
-            $response->setRecursionRequested($flags{7}=='1');
-            $response->setRecursionAvailable($flags{8}=='1');
-            $response->setAuthenticated($flags{10}=='1');
-            $response->setDnssecAware($flags{11}=='1');
+            $response->setAuthorative($flags[5]=='1');
+            $response->setTruncated($flags[6]=='1');
+            $response->setRecursionRequested($flags[7]=='1');
+            $response->setRecursionAvailable($flags[8]=='1');
+            $response->setAuthenticated($flags[10]=='1');
+            $response->setDnssecAware($flags[11]=='1');
             $response->setAnswerCount($this->header['ancount']);
 
             $this->writeLog("Query returned ".$this->header['ancount']." Answers");
@@ -232,7 +232,7 @@ namespace Metaregistrar\DNS {
                     $c=1;
                     while ($c!=0)
                     {
-                        $c=hexdec(bin2hex($response->ReadResponse($this->rawbuffer, 1)));
+                        $c=hexdec(bin2hex($response->ReadResponse($this->rawbuffer)));
                         $q .= $c;
                     }
                     $response->addQuery($q);
@@ -331,23 +331,20 @@ namespace Metaregistrar\DNS {
                     # Diffie-Helman
                     return 'dh';
                 case 3:
-                    return 'sha1';
-                case 4:
-                    return 'reserved';
                 case 5:
                     return 'sha1';
+                case 4:
+                case 9:
+                case 11:
+                return 'reserved';
                 case 6:
                     return 'dsansec3sha1';
                 case 7:
                     return 'rsasha1nsec3';
                 case 8:
                     return 'sha256';
-                case 9:
-                    return 'reserved';
                 case 10:
                     return 'sha512';
-                case 11:
-                    return 'reserved';
                 case 12:
                     return 'gost';
                 case 13:
