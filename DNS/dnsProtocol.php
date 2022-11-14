@@ -66,7 +66,6 @@ namespace Metaregistrar\DNS {
             $this->setReadTimeout();
             $this->udp=false;
             $this->types=new dnsTypes();
-            set_error_handler(array($this,'error_handler'));
             $this->writelog("dnsProtocol Class Initialised");
         }
 
@@ -97,6 +96,9 @@ namespace Metaregistrar\DNS {
          */
         function Query($question,$type='A')
         {
+            set_error_handler(array($this,'error_handler'));
+            try {
+
             $typeid=$this->types->GetByName($type);
             if ($typeid===false)
             {
@@ -301,6 +303,10 @@ namespace Metaregistrar\DNS {
                 $response->ReadRecord($this->rawbuffer,dnsResponse::RESULTTYPE_ADDITIONAL);
             }
             return $response;
+
+            } finally {
+                restore_error_handler();
+            }
         }
 
         public function setServer($server)
@@ -420,8 +426,13 @@ namespace Metaregistrar\DNS {
 
         function registrynameservers($tld)
         {
-            $ns = new dnsNameserver();
-            return $ns->getNs($tld);
+            set_error_handler(array($this,'error_handler'));
+            try {
+                $ns = new dnsNameserver();
+                return $ns->getNs($tld);
+            } finally {
+                restore_error_handler();
+            }
         }
 
         function base32encode($input, $padding = true) {
